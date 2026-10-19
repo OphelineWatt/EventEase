@@ -6,6 +6,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { PlayfairDisplay_700Bold } from "@expo-google-fonts/playfair-display";
 import { DMSans_400Regular, DMSans_500Medium, DMSans_700Bold } from "@expo-google-fonts/dm-sans";
 import { RootNavigator } from "@/navigation/RootNavigator";
+import { AuthProvider } from "@/context/AuthContext";
 import { colors } from "@/constants/theme";
 
 // On garde le splash screen affiché tant que les polices ne sont pas chargées
@@ -41,9 +42,11 @@ export default function App() {
   if (!fontsLoaded && !fontError) return null;
 
   return (
-    <NavigationContainer theme={navigationTheme}>
-      <StatusBar style="dark" />
-      <RootNavigator />
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer theme={navigationTheme}>
+        <StatusBar style="dark" />
+        <RootNavigator />
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
