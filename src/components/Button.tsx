@@ -5,8 +5,8 @@ import { colors, fonts, fontSize, radius, spacing } from "@/constants/theme";
 type ButtonProps = {
   title: string;
   onPress: () => void;
-  /** primary = fond bordeaux, outline = fond blanc bordé, link = simple texte */
-  variant?: "primary" | "outline" | "link";
+  /** primary = fond bordeaux, outline = fond blanc bordé, link = simple texte, danger = texte rouge (suppression) */
+  variant?: "primary" | "outline" | "link" | "danger";
   /** Icône facultative affichée à côté du texte */
   icon?: ReactNode;
   loading?: boolean;
@@ -33,7 +33,7 @@ export function Button({ title, onPress, variant = "primary", icon, loading, dis
         <ActivityIndicator color={variant === "primary" ? colors.textOnPrimary : colors.primary} />
       ) : (
         <View style={styles.content}>
-          <Text style={[styles.text, variant === "primary" ? styles.textPrimary : styles.textDark]}>
+          <Text style={[styles.text, textStyles[variant]]}>
             {title}
           </Text>
           {icon}
@@ -68,10 +68,19 @@ const styles = StyleSheet.create({
   link: {
     backgroundColor: "transparent",
   },
+  danger: {
+    backgroundColor: "transparent",
+  },
   pressed: { opacity: 0.8 },
   disabled: { opacity: 0.5 },
   content: { flexDirection: "row", alignItems: "center", gap: spacing.sm },
   text: { fontFamily: fonts.bodyBold, fontSize: fontSize.md },
-  textPrimary: { color: colors.textOnPrimary },
-  textDark: { color: colors.primary },
+});
+
+/** Couleur du texte selon la variante du bouton */
+const textStyles = StyleSheet.create({
+  primary: { color: colors.textOnPrimary },
+  outline: { color: colors.primary },
+  link: { color: colors.primary },
+  danger: { color: colors.danger },
 });

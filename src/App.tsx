@@ -7,6 +7,7 @@ import { PlayfairDisplay_700Bold } from "@expo-google-fonts/playfair-display";
 import { DMSans_400Regular, DMSans_500Medium, DMSans_700Bold } from "@expo-google-fonts/dm-sans";
 import { RootNavigator } from "@/navigation/RootNavigator";
 import { AuthProvider } from "@/context/AuthContext";
+import { EventsProvider } from "@/context/EventsContext";
 import { colors } from "@/constants/theme";
 
 // On garde le splash screen affiché tant que les polices ne sont pas chargées
@@ -43,10 +44,13 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <NavigationContainer theme={navigationTheme}>
-        <StatusBar style="dark" />
-        <RootNavigator />
-      </NavigationContainer>
+      {/* EventsProvider est DANS AuthProvider car il a besoin de l'utilisateur connecté */}
+      <EventsProvider>
+        <NavigationContainer theme={navigationTheme}>
+          <StatusBar style="dark" />
+          <RootNavigator />
+        </NavigationContainer>
+      </EventsProvider>
     </AuthProvider>
   );
 }
