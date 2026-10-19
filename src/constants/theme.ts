@@ -1,65 +1,77 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://unistyl.es/), etc.
+ * Thème global d'EventEase, inspiré de l'univers du théâtre (rideau rouge, crème, doré).
+ * Toutes les couleurs, espacements et polices sont centralisés ici :
+ * aucun écran n'écrit de valeur « en dur ».
  */
 
-import '@/global.css';
+/** Palette de couleurs */
+export const colors = {
+  // Bordeaux : couleur principale (boutons, onglet actif, logo)
+  primary: "#6E1A2C",
+  primaryDark: "#4A0F1C", // dégradé du bandeau et du rideau
+  primaryLight: "#F6E3E6", // fond des pastilles « Conférence », des initiales, etc.
 
-import { Platform } from 'react-native';
+  // Doré : accent (petits titres « PROGRAMMATION », icônes horloge/lieu, points du calendrier)
+  accent: "#B8862F",
+  accentLight: "#F6E9D4", // encadré « Un accueil pour toutes et tous »
 
-export const Colors = {
-  light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
-  },
-  dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
-  },
+  // Fonds
+  background: "#F9F5F0", // crème de toutes les pages
+  card: "#FFFCF8", // cartes légèrement plus claires que le fond
+  border: "#E8DFD6",
+  focus: "#D99A3A", // bordure orangée du champ sélectionné
+
+  // Textes
+  text: "#1F1A1C",
+  textSecondary: "#6B6466",
+  textOnPrimary: "#FFFFFF", // texte sur fond bordeaux
+
+  // États
+  success: "#2F6B4F", // événement auquel on participe
+  danger: "#B42318", // suppression, messages d'erreur
 } as const;
 
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
-
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: 'var(--font-display)',
-    serif: 'var(--font-serif)',
-    rounded: 'var(--font-rounded)',
-    mono: 'var(--font-mono)',
-  },
-});
-
-export const Spacing = {
-  half: 2,
-  one: 4,
-  two: 8,
-  three: 16,
-  four: 24,
-  five: 32,
-  six: 64,
+/**
+ * Couleurs de chaque catégorie d'événement (pastilles et bloc date des cartes).
+ * Conférence = bordeaux, Atelier = doré, Sortie = vert, comme sur la maquette.
+ */
+export const categoryColors = {
+  conference: { background: "#F6E3E6", text: "#6E1A2C" },
+  atelier: { background: "#F8EBD3", text: "#8A5A14" },
+  sortie: { background: "#E6F0EA", text: "#2F6B4F" },
 } as const;
 
-export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
-export const MaxContentWidth = 800;
+/** Polices : titres en serif élégant, texte courant en sans-serif lisible */
+export const fonts = {
+  title: "PlayfairDisplay_700Bold",
+  body: "DMSans_400Regular",
+  bodyMedium: "DMSans_500Medium",
+  bodyBold: "DMSans_700Bold",
+} as const;
+
+/** Espacements (marges, paddings) sur une échelle de 4 px */
+export const spacing = {
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
+} as const;
+
+/** Rayons d'arrondi (cartes, boutons, champs, pastilles) */
+export const radius = {
+  sm: 8,
+  md: 14,
+  lg: 20,
+  pill: 999, // pastilles de catégorie, entièrement arrondies
+} as const;
+
+/** Tailles de police */
+export const fontSize = {
+  xs: 11, // petits titres en majuscules (« BIENVENUE »)
+  sm: 13,
+  md: 16,
+  lg: 20,
+  xl: 28,
+  xxl: 36, // « EventEase », « Le calendrier »
+} as const;
