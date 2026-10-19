@@ -10,6 +10,8 @@ export const colors = {
   primary: "#6E1A2C",
   primaryDark: "#4A0F1C", // dégradé du bandeau et du rideau
   primaryLight: "#F6E3E6", // fond des pastilles « Conférence », des initiales, etc.
+  curtainLight: "#9B2C3F", // reflet clair des plis du rideau
+  overlay: "rgba(30, 5, 10, 0.85)", // voile sombre sous le texte du bandeau
 
   // Doré : accent (petits titres « PROGRAMMATION », icônes horloge/lieu, points du calendrier)
   accent: "#B8862F",
