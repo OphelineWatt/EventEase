@@ -131,6 +131,14 @@ export const en: Translations = {
     emptyDay: "No events on this day.",
     showMonth: "Show the whole month",
   },
+  location: {
+    located: "Address located",
+    hint: "Pick a suggestion to be able to show the distance.",
+    distance: "%{distance} from you",
+    directions: "Directions",
+    permissionDenied: "Allow location access in Settings to see the distance.",
+    errors: { searchFailed: "Address search failed. Please check your connection." },
+  },
   profile: {
     headerTitle: "Your space",
     kicker: "Member area",

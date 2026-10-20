@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { AddressField } from "@/components/AddressField";
 import { Button } from "@/components/Button";
 import { Chip } from "@/components/Chip";
 import { DateTimeField } from "@/components/DateTimeField";
@@ -9,11 +10,13 @@ import { ScreenTitle } from "@/components/ScreenTitle";
 import { CATEGORIES, getCategoryLabel } from "@/constants/categories";
 import { colors, fonts, fontSize, spacing } from "@/constants/theme";
 import { useEvents } from "@/hooks/useEvents";
+import { useKeyboardHeight } from "@/hooks/useKeyboardHeight";
 import { t } from "@/i18n";
 import { showError } from "@/utils/alerts";
 import { getDefaultEventDate } from "@/utils/date";
 import { validateRequired } from "@/utils/validation";
 import type { RootStackScreenProps } from "@/navigation/types";
+import type { AddressSuggestion } from "@/services/geocoding";
 import type { EventCategory, EventInput } from "@/types/event";
 
 /** Formulaire de création (sans eventId) ou de modification (avec eventId) d'un événement */
@@ -30,10 +33,43 @@ export function EventFormScreen({ navigation, route }: RootStackScreenProps<"Eve
   const [description, setDescription] = useState(existing?.description ?? "");
   const [date, setDate] = useState(() => (existing ? new Date(existing.date) : getDefaultEventDate()));
   const [address, setAddress] = useState(existing?.location?.address ?? "");
+  // Coordonnées GPS de l'adresse choisie dans les suggestions (undefined si l'adresse est tapée à la main)
+  const [coords, setCoords] = useState(() => {
+    const loc = existing?.location;
+    return loc?.latitude !== undefined && loc.longitude !== undefined
+      ? { latitude: loc.latitude, longitude: loc.longitude }
+      : undefined;
+  });
   const [category, setCategory] = useState<EventCategory>(existing?.category ?? "conference");
 
   const [errors, setErrors] = useState<{ title?: string; description?: string }>({});
   const [submitting, setSubmitting] = useState(false);
+
+  const scrollRef = useRef<ScrollView>(null);
+  // Position verticale du champ Lieu dans le formulaire (mesurée à l'affichage)
+  const addressY = useRef(0);
+  const [addressFocused, setAddressFocused] = useState(false);
+  const keyboardHeight = useKeyboardHeight();
+
+  // Dès que le clavier est ouvert sur le champ Lieu, on fait défiler pour le placer en haut :
+  // les suggestions s'affichent alors juste en dessous, au-dessus du clavier
+  useEffect(() => {
+    if (addressFocused && keyboardHeight > 0) {
+      scrollRef.current?.scrollTo({ y: addressY.current - spacing.md, animated: true });
+    }
+  }, [addressFocused, keyboardHeight]);
+
+  /** Toute modification du texte invalide les coordonnées : elles ne correspondraient plus à l'adresse */
+  function handleAddressChange(text: string) {
+    setAddress(text);
+    setCoords(undefined);
+  }
+
+  /** Une suggestion choisie fournit à la fois le texte officiel et les coordonnées GPS */
+  function handleAddressSelect(suggestion: AddressSuggestion) {
+    setAddress(suggestion.label);
+    setCoords({ latitude: suggestion.latitude, longitude: suggestion.longitude });
+  }
 
   async function handleSubmit() {
     // 1. Vérification des champs obligatoires
@@ -50,7 +86,7 @@ export function EventFormScreen({ navigation, route }: RootStackScreenProps<"Eve
       description: description.trim(),
       category,
       date: date.toISOString(), // stockée au format ISO (voir types/event.ts)
-      location: address.trim() ? { address: address.trim() } : undefined,
+      location: address.trim() ? { address: address.trim(), ...coords } : undefined,
     };
 
     // 3. Enregistrement puis fermeture du formulaire
@@ -79,7 +115,13 @@ export function EventFormScreen({ navigation, route }: RootStackScreenProps<"Eve
   }
 
   return (
-    <ScrollView style={styles.flex} contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+    <ScrollView
+      ref={scrollRef}
+      style={styles.flex}
+      // Marge en bas égale au clavier : laisse la place de faire défiler le champ Lieu jusqu'en haut
+      contentContainerStyle={[styles.container, { paddingBottom: spacing.xl * 2 + keyboardHeight }]}
+      keyboardShouldPersistTaps="handled"
+    >
       <View style={styles.headerRow}>
         <ScreenTitle
           kicker={t("events.form.kicker")}
@@ -109,12 +151,19 @@ export function EventFormScreen({ navigation, route }: RootStackScreenProps<"Eve
         <DateTimeField label={t("events.form.time")} mode="time" value={date} onChange={setDate} />
       </View>
 
-      <Input
-        label={t("events.form.location")}
-        value={address}
-        onChangeText={setAddress}
-        placeholder={t("events.form.locationPlaceholder")}
-      />
+      {/* onLayout mesure la position du champ dans le formulaire */}
+      <View onLayout={(e) => (addressY.current = e.nativeEvent.layout.y)}>
+        <AddressField
+          label={t("events.form.location")}
+          placeholder={t("events.form.locationPlaceholder")}
+          value={address}
+          isLocated={!!coords}
+          onChangeText={handleAddressChange}
+          onSelect={handleAddressSelect}
+          onFocus={() => setAddressFocused(true)}
+          onBlur={() => setAddressFocused(false)}
+        />
+      </View>
 
       <View style={styles.categoryField}>
         <Text style={styles.label}>{t("events.form.category")}</Text>

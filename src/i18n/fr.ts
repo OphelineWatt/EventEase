@@ -129,6 +129,14 @@ export const fr = {
     emptyDay: "Aucun événement ce jour-là.",
     showMonth: "Voir tout le mois",
   },
+  location: {
+    located: "Adresse localisée",
+    hint: "Choisissez une suggestion pour pouvoir afficher la distance.",
+    distance: "À %{distance} de vous",
+    directions: "Itinéraire",
+    permissionDenied: "Autorisez la localisation dans les réglages pour voir la distance.",
+    errors: { searchFailed: "La recherche d’adresse a échoué. Vérifiez votre connexion." },
+  },
   profile: {
     headerTitle: "Votre espace",
     kicker: "Espace membre",

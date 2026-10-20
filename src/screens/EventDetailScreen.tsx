@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Button } from "@/components/Button";
 import { CategoryBadge } from "@/components/CategoryBadge";
 import { DateBlock } from "@/components/DateBlock";
@@ -9,9 +10,12 @@ import { ParticipateButton } from "@/components/ParticipateButton";
 import { colors, fonts, fontSize, radius, spacing } from "@/constants/theme";
 import { useAuth } from "@/hooks/useAuth";
 import { useEvents } from "@/hooks/useEvents";
+import { useUserLocation } from "@/hooks/useUserLocation";
 import { t } from "@/i18n";
 import { confirmDelete, showError } from "@/utils/alerts";
 import { formatLongDate, formatTime } from "@/utils/date";
+import { formatDistance, getEventDistance } from "@/utils/distance";
+import { openDirections } from "@/utils/maps";
 import type { RootStackScreenProps } from "@/navigation/types";
 
 /** Détail d'un événement : informations complètes, participation, modification, suppression */
@@ -19,6 +23,8 @@ export function EventDetailScreen({ navigation, route }: RootStackScreenProps<"E
   const { eventId } = route.params;
   const { user } = useAuth();
   const { getEventById, deleteEvent, toggleParticipation } = useEvents();
+  // Position de l'utilisateur (demande la permission au premier affichage)
+  const { coords: userCoords, status: locationStatus } = useUserLocation();
 
   // Relu à chaque affichage : l'écran se met à jour après une modification ou une participation
   const event = getEventById(eventId);
@@ -34,6 +40,10 @@ export function EventDetailScreen({ navigation, route }: RootStackScreenProps<"E
   }
 
   const isParticipating = !!user && event.participants.includes(user.email);
+
+  // Distance calculable seulement si le lieu a des coordonnées (adresse choisie dans les suggestions)
+  const location = event.location;
+  const distance = getEventDistance(event, userCoords);
 
   // Fonction fléchée (et non `function`) : TypeScript sait ainsi que `event` existe forcément ici
   const handleDelete = () => {
@@ -67,7 +77,13 @@ export function EventDetailScreen({ navigation, route }: RootStackScreenProps<"E
         <View style={styles.infoCard}>
           <InfoRow icon="calendar-outline" text={formatLongDate(event.date)} />
           <InfoRow icon="time-outline" text={formatTime(event.date)} />
-          {event.location && <InfoRow icon="location-outline" text={event.location.address} />}
+          {location && <InfoRow icon="location-outline" text={location.address} />}
+          {distance !== undefined && (
+            <InfoRow icon="navigate-outline" text={t("location.distance", { distance: formatDistance(distance) })} />
+          )}
+          {location?.latitude !== undefined && locationStatus === "denied" && (
+            <Text style={styles.hint}>{t("location.permissionDenied")}</Text>
+          )}
           <InfoRow icon="people-outline" text={t("events.detail.participants", { count: event.participants.length })} />
         </View>
 
@@ -81,6 +97,14 @@ export function EventDetailScreen({ navigation, route }: RootStackScreenProps<"E
             active={isParticipating}
             onPress={() => toggleParticipation(event.id).catch(showError)}
           />
+          {location && (
+            <Button
+              title={t("location.directions")}
+              variant="outline"
+              icon={<Ionicons name="map-outline" size={20} color={colors.primary} />}
+              onPress={() => openDirections(location).catch(showError)}
+            />
+          )}
           <Button
             title={t("events.detail.edit")}
             variant="outline"
@@ -111,5 +135,6 @@ const styles = StyleSheet.create({
   section: { gap: spacing.sm },
   sectionTitle: { fontFamily: fonts.title, fontSize: fontSize.lg, color: colors.text },
   description: { fontFamily: fonts.body, fontSize: fontSize.md, lineHeight: 24, color: colors.textSecondary },
+  hint: { fontFamily: fonts.body, fontSize: fontSize.sm, color: colors.textSecondary },
   actions: { gap: spacing.sm },
 });

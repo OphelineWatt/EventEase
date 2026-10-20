@@ -7,6 +7,7 @@ import { ParticipateButton } from "./ParticipateButton";
 import { colors, fonts, fontSize, radius, spacing } from "@/constants/theme";
 import { t } from "@/i18n";
 import { formatTime } from "@/utils/date";
+import { formatDistance } from "@/utils/distance";
 import type { Event } from "@/types/event";
 
 type EventCardProps = {
@@ -17,13 +18,23 @@ type EventCardProps = {
   onEdit: () => void;
   onDelete: () => void;
   onToggleParticipation: () => void;
+  /** Distance en km depuis l'utilisateur (absente si inconnue) */
+  distance?: number;
 };
 
 /**
  * Carte d'un événement dans la liste « À l'affiche ».
  * Composant d'affichage uniquement : toutes les actions sont fournies par l'écran parent.
  */
-export function EventCard({ event, isParticipating, onPress, onEdit, onDelete, onToggleParticipation }: EventCardProps) {
+export function EventCard({
+  event,
+  isParticipating,
+  onPress,
+  onEdit,
+  onDelete,
+  onToggleParticipation,
+  distance,
+}: EventCardProps) {
   return (
     <Pressable
       onPress={onPress}
@@ -52,6 +63,9 @@ export function EventCard({ event, isParticipating, onPress, onEdit, onDelete, o
 
           <InfoRow icon="time-outline" text={formatTime(event.date)} />
           {event.location && <InfoRow icon="location-outline" text={event.location.address} />}
+          {distance !== undefined && (
+            <InfoRow icon="navigate-outline" text={t("location.distance", { distance: formatDistance(distance) })} />
+          )}
         </View>
       </View>
 

@@ -11,8 +11,10 @@ import { CATEGORIES, getCategoryLabel } from "@/constants/categories";
 import { colors, fonts, fontSize, radius, spacing } from "@/constants/theme";
 import { useAuth } from "@/hooks/useAuth";
 import { useEvents } from "@/hooks/useEvents";
+import { useUserLocation } from "@/hooks/useUserLocation";
 import { t } from "@/i18n";
 import { confirmDelete, showError } from "@/utils/alerts";
+import { getEventDistance } from "@/utils/distance";
 import type { MainTabScreenProps } from "@/navigation/types";
 import type { Event, EventCategory } from "@/types/event";
 
@@ -23,6 +25,8 @@ type CategoryFilter = EventCategory | "all";
 export function EventsScreen({ navigation }: MainTabScreenProps<"Events">) {
   const { user } = useAuth();
   const { events, isLoading, deleteEvent, toggleParticipation } = useEvents();
+  // Position de l'utilisateur, pour afficher la distance sur chaque carte
+  const { coords: userCoords } = useUserLocation();
 
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<CategoryFilter>("all");
@@ -106,6 +110,7 @@ export function EventsScreen({ navigation }: MainTabScreenProps<"Events">) {
         renderItem={({ item }) => (
           <EventCard
             event={item}
+            distance={getEventDistance(item, userCoords)}
             isParticipating={!!user && item.participants.includes(user.email)}
             onPress={() => navigation.navigate("EventDetail", { eventId: item.id })}
             onEdit={() => navigation.navigate("EventForm", { eventId: item.id })}
