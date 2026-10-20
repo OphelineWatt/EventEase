@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { getEvents, saveEvents } from "@/services/storage";
 import { useAuth } from "@/hooks/useAuth";
+import { t } from "@/i18n";
 import type { Event, EventInput } from "@/types/event";
 
 /** Ce que le contexte des événements met à disposition de toute l'application */
@@ -66,7 +67,7 @@ export function EventsProvider({ children }: { children: ReactNode }) {
 
   /** Création : complète les champs du formulaire puis enregistre le nouvel événement */
   async function addEvent(input: EventInput): Promise<Event> {
-    if (!user) throw new Error("Vous devez être connecté pour créer un événement.");
+    if (!user) throw new Error(t("events.errors.loginRequiredToCreate"));
 
     const newEvent: Event = {
       ...input,
@@ -81,7 +82,7 @@ export function EventsProvider({ children }: { children: ReactNode }) {
   /** Modification : remplace les champs du formulaire, en conservant id, participants et créateur */
   async function updateEvent(id: string, input: EventInput) {
     if (!events.some((e) => e.id === id)) {
-      throw new Error("Cet événement n'existe plus.");
+      throw new Error(t("events.notFound"));
     }
 
     await persist(
@@ -101,7 +102,7 @@ export function EventsProvider({ children }: { children: ReactNode }) {
 
   /** Participation : ajoute ou retire l'utilisateur connecté de la liste des participants */
   async function toggleParticipation(id: string) {
-    if (!user) throw new Error("Vous devez être connecté pour participer.");
+    if (!user) throw new Error(t("events.errors.loginRequiredToParticipate"));
 
     await persist(
       events.map((e) => {

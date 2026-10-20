@@ -7,10 +7,11 @@ import { Chip } from "@/components/Chip";
 import { EventCard } from "@/components/EventCard";
 import { SearchBar } from "@/components/SearchBar";
 import { TabHeader } from "@/components/TabHeader";
-import { CATEGORIES, CATEGORY_LABELS } from "@/constants/categories";
+import { CATEGORIES, getCategoryLabel } from "@/constants/categories";
 import { colors, fonts, fontSize, radius, spacing } from "@/constants/theme";
 import { useAuth } from "@/hooks/useAuth";
 import { useEvents } from "@/hooks/useEvents";
+import { t } from "@/i18n";
 import { confirmDelete, showError } from "@/utils/alerts";
 import type { MainTabScreenProps } from "@/navigation/types";
 import type { Event, EventCategory } from "@/types/event";
@@ -48,8 +49,8 @@ export function EventsScreen({ navigation }: MainTabScreenProps<"Events">) {
   // Message affiché quand la liste est vide (aucun événement, ou aucun résultat de recherche)
   const emptyMessage =
     events.length === 0
-      ? "Aucun événement pour le moment. Touchez + pour créer le premier !"
-      : "Aucun événement ne correspond à votre recherche.";
+      ? t("events.list.emptyNoEvents")
+      : t("events.list.emptyNoResults");
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
@@ -61,7 +62,7 @@ export function EventsScreen({ navigation }: MainTabScreenProps<"Events">) {
         // En-tête passé comme élément (et non comme composant) : le champ de recherche garde le focus
         ListHeaderComponent={
           <View style={styles.header}>
-            <TabHeader title="À l’affiche" />
+            <TabHeader title={t("events.list.title")} />
 
             <LinearGradient
               colors={[colors.curtainLight, colors.primaryDark]}
@@ -69,18 +70,18 @@ export function EventsScreen({ navigation }: MainTabScreenProps<"Events">) {
               end={{ x: 1, y: 1 }}
               style={styles.hero}
             >
-              <Text style={styles.heroTitle}>Les prochains rendez-vous</Text>
-              <Text style={styles.heroSubtitle}>Découvrez, rencontrez, partagez.</Text>
+              <Text style={styles.heroTitle}>{t("events.list.heroTitle")}</Text>
+              <Text style={styles.heroSubtitle}>{t("events.list.heroSubtitle")}</Text>
             </LinearGradient>
 
             <SearchBar value={search} onChangeText={setSearch} />
 
             <View style={styles.chips}>
-              <Chip label="Tous" selected={filter === "all"} onPress={() => setFilter("all")} />
+              <Chip label={t("events.list.filterAll")} selected={filter === "all"} onPress={() => setFilter("all")} />
               {CATEGORIES.map((category) => (
                 <Chip
                   key={category}
-                  label={CATEGORY_LABELS[category]}
+                  label={getCategoryLabel(category)}
                   selected={filter === category}
                   onPress={() => setFilter(category)}
                 />
@@ -89,9 +90,9 @@ export function EventsScreen({ navigation }: MainTabScreenProps<"Events">) {
 
             <View style={styles.countRow}>
               <Text style={styles.count}>
-                <Text style={styles.countNumber}>{visibleEvents.length}</Text> rendez-vous
+                <Text style={styles.countNumber}>{visibleEvents.length}</Text> {t("events.list.count", { count: visibleEvents.length })}
               </Text>
-              <Text style={styles.countLabel}>PROGRAMMATION</Text>
+              <Text style={styles.countLabel}>{t("events.list.programme").toUpperCase()}</Text>
             </View>
           </View>
         }
@@ -118,7 +119,7 @@ export function EventsScreen({ navigation }: MainTabScreenProps<"Events">) {
       <Pressable
         onPress={() => navigation.navigate("EventForm")}
         accessibilityRole="button"
-        accessibilityLabel="Créer un événement"
+        accessibilityLabel={t("events.list.create")}
         style={({ pressed }) => [styles.fab, pressed && styles.fabPressed]}
       >
         <Ionicons name="add" size={30} color={colors.textOnPrimary} />

@@ -9,15 +9,10 @@ import { ParticipateButton } from "@/components/ParticipateButton";
 import { colors, fonts, fontSize, radius, spacing } from "@/constants/theme";
 import { useAuth } from "@/hooks/useAuth";
 import { useEvents } from "@/hooks/useEvents";
+import { t } from "@/i18n";
 import { confirmDelete, showError } from "@/utils/alerts";
 import { formatLongDate, formatTime } from "@/utils/date";
 import type { RootStackScreenProps } from "@/navigation/types";
-
-/** Texte du nombre de participants, accordé au singulier / pluriel */
-function formatParticipants(count: number): string {
-  if (count === 0) return "Aucun participant pour l’instant";
-  return count === 1 ? "1 participant" : `${count} participants`;
-}
 
 /** Détail d'un événement : informations complètes, participation, modification, suppression */
 export function EventDetailScreen({ navigation, route }: RootStackScreenProps<"EventDetail">) {
@@ -32,8 +27,8 @@ export function EventDetailScreen({ navigation, route }: RootStackScreenProps<"E
   if (!event) {
     return (
       <SafeAreaView style={[styles.flex, styles.container]}>
-        <Text style={styles.description}>Cet événement n’existe plus.</Text>
-        <Button title="Retour" variant="outline" onPress={() => navigation.goBack()} />
+        <Text style={styles.description}>{t("events.notFound")}</Text>
+        <Button title={t("common.back")} variant="outline" onPress={() => navigation.goBack()} />
       </SafeAreaView>
     );
   }
@@ -55,7 +50,7 @@ export function EventDetailScreen({ navigation, route }: RootStackScreenProps<"E
   return (
     <SafeAreaView style={styles.flex} edges={["top", "bottom"]}>
       <View style={styles.topBar}>
-        <IconButton icon="arrow-back" label="Retour" color={colors.text} onPress={() => navigation.goBack()} />
+        <IconButton icon="arrow-back" label={t("common.back")} color={colors.text} onPress={() => navigation.goBack()} />
       </View>
 
       <ScrollView contentContainerStyle={styles.container}>
@@ -73,11 +68,11 @@ export function EventDetailScreen({ navigation, route }: RootStackScreenProps<"E
           <InfoRow icon="calendar-outline" text={formatLongDate(event.date)} />
           <InfoRow icon="time-outline" text={formatTime(event.date)} />
           {event.location && <InfoRow icon="location-outline" text={event.location.address} />}
-          <InfoRow icon="people-outline" text={formatParticipants(event.participants.length)} />
+          <InfoRow icon="people-outline" text={t("events.detail.participants", { count: event.participants.length })} />
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>À propos</Text>
+          <Text style={styles.sectionTitle}>{t("events.detail.about")}</Text>
           <Text style={styles.description}>{event.description}</Text>
         </View>
 
@@ -87,11 +82,11 @@ export function EventDetailScreen({ navigation, route }: RootStackScreenProps<"E
             onPress={() => toggleParticipation(event.id).catch(showError)}
           />
           <Button
-            title="Modifier"
+            title={t("events.detail.edit")}
             variant="outline"
             onPress={() => navigation.navigate("EventForm", { eventId: event.id })}
           />
-          <Button title="Supprimer l’événement" variant="danger" onPress={handleDelete} />
+          <Button title={t("events.detail.delete")} variant="danger" onPress={handleDelete} />
         </View>
       </ScrollView>
     </SafeAreaView>

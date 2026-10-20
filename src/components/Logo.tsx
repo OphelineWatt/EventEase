@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
 import { colors, fonts, radius } from "@/constants/theme";
+import { t } from "@/i18n";
 
 /** Logo EventEase : un « E » dans un losange bordeaux */
 export function Logo({ size = 44 }: { size?: number }) {
   return (
-    <View style={[styles.diamond, { width: size, height: size }]} accessibilityLabel="EventEase">
+    <View style={[styles.diamond, { width: size, height: size }]} accessibilityLabel={t("common.appName")}>
       <Text style={[styles.letter, { fontSize: size * 0.5 }]}>E</Text>
     </View>
   );

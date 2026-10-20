@@ -5,6 +5,7 @@ import { EventsScreen } from "@/screens/EventsScreen";
 import { CalendarScreen } from "@/screens/CalendarScreen";
 import { ProfileScreen } from "@/screens/ProfileScreen";
 import { colors, fonts } from "@/constants/theme";
+import { t } from "@/i18n";
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
@@ -24,7 +25,7 @@ export function MainTabs() {
         name="Events"
         component={EventsScreen}
         options={{
-          title: "Découvrir",
+          title: t("tabs.events"),
           tabBarIcon: ({ color, size }) => <Ionicons name="home-outline" size={size} color={color} />,
         }}
       />
@@ -32,7 +33,7 @@ export function MainTabs() {
         name="Calendar"
         component={CalendarScreen}
         options={{
-          title: "Calendrier",
+          title: t("tabs.calendar"),
           tabBarIcon: ({ color, size }) => <Ionicons name="calendar-outline" size={size} color={color} />,
         }}
       />
@@ -40,7 +41,7 @@ export function MainTabs() {
         name="Profile"
         component={ProfileScreen}
         options={{
-          title: "Profil",
+          title: t("tabs.profile"),
           tabBarIcon: ({ color, size }) => <Ionicons name="person-outline" size={size} color={color} />,
         }}
       />

@@ -6,9 +6,10 @@ import { DateTimeField } from "@/components/DateTimeField";
 import { IconButton } from "@/components/IconButton";
 import { Input } from "@/components/Input";
 import { ScreenTitle } from "@/components/ScreenTitle";
-import { CATEGORIES, CATEGORY_LABELS } from "@/constants/categories";
+import { CATEGORIES, getCategoryLabel } from "@/constants/categories";
 import { colors, fonts, fontSize, spacing } from "@/constants/theme";
 import { useEvents } from "@/hooks/useEvents";
+import { t } from "@/i18n";
 import { showError } from "@/utils/alerts";
 import { getDefaultEventDate } from "@/utils/date";
 import { validateRequired } from "@/utils/validation";
@@ -37,8 +38,8 @@ export function EventFormScreen({ navigation, route }: RootStackScreenProps<"Eve
   async function handleSubmit() {
     // 1. Vérification des champs obligatoires
     const newErrors = {
-      title: validateRequired(title, "Le titre est obligatoire."),
-      description: validateRequired(description, "La description est obligatoire."),
+      title: validateRequired(title, t("events.form.titleRequired")),
+      description: validateRequired(description, t("events.form.descriptionRequired")),
     };
     setErrors(newErrors);
     if (newErrors.title || newErrors.description) return;
@@ -71,8 +72,8 @@ export function EventFormScreen({ navigation, route }: RootStackScreenProps<"Eve
   if (isEditing && !existing) {
     return (
       <View style={styles.container}>
-        <Text style={styles.notFound}>Cet événement n’existe plus.</Text>
-        <Button title="Fermer" variant="outline" onPress={() => navigation.goBack()} />
+        <Text style={styles.notFound}>{t("events.notFound")}</Text>
+        <Button title={t("common.close")} variant="outline" onPress={() => navigation.goBack()} />
       </View>
     );
   }
@@ -80,40 +81,48 @@ export function EventFormScreen({ navigation, route }: RootStackScreenProps<"Eve
   return (
     <ScrollView style={styles.flex} contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
       <View style={styles.headerRow}>
-        <ScreenTitle kicker="Programmation" title={isEditing ? "Modifier l’événement" : "Nouvel événement"} />
-        <IconButton icon="close" label="Fermer le formulaire" color={colors.text} onPress={() => navigation.goBack()} />
+        <ScreenTitle
+          kicker={t("events.form.kicker")}
+          title={isEditing ? t("events.form.editTitle") : t("events.form.newTitle")}
+        />
+        <IconButton icon="close" label={t("events.form.close")} color={colors.text} onPress={() => navigation.goBack()} />
       </View>
 
       <Input
-        label="Titre"
+        label={t("events.form.title")}
         value={title}
         onChangeText={setTitle}
-        placeholder="Nom de l’événement"
+        placeholder={t("events.form.titlePlaceholder")}
         error={errors.title}
       />
       <Input
-        label="Description"
+        label={t("events.form.description")}
         value={description}
         onChangeText={setDescription}
-        placeholder="Décrivez l’expérience proposée"
+        placeholder={t("events.form.descriptionPlaceholder")}
         multiline
         error={errors.description}
       />
 
       <View style={styles.dateRow}>
-        <DateTimeField label="Date" mode="date" value={date} onChange={setDate} />
-        <DateTimeField label="Heure" mode="time" value={date} onChange={setDate} />
+        <DateTimeField label={t("events.form.date")} mode="date" value={date} onChange={setDate} />
+        <DateTimeField label={t("events.form.time")} mode="time" value={date} onChange={setDate} />
       </View>
 
-      <Input label="Lieu (facultatif)" value={address} onChangeText={setAddress} placeholder="Nom ou adresse du lieu" />
+      <Input
+        label={t("events.form.location")}
+        value={address}
+        onChangeText={setAddress}
+        placeholder={t("events.form.locationPlaceholder")}
+      />
 
       <View style={styles.categoryField}>
-        <Text style={styles.label}>Catégorie</Text>
+        <Text style={styles.label}>{t("events.form.category")}</Text>
         <View style={styles.chips}>
           {CATEGORIES.map((item) => (
             <Chip
               key={item}
-              label={CATEGORY_LABELS[item]}
+              label={getCategoryLabel(item)}
               selected={category === item}
               onPress={() => setCategory(item)}
             />
@@ -122,7 +131,7 @@ export function EventFormScreen({ navigation, route }: RootStackScreenProps<"Eve
       </View>
 
       <Button
-        title={isEditing ? "Enregistrer les modifications" : "Ajouter à la programmation"}
+        title={isEditing ? t("events.form.submitEdit") : t("events.form.submitNew")}
         onPress={handleSubmit}
         loading={submitting}
       />

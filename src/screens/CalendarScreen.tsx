@@ -1,12 +1,13 @@
 import { StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors, fonts, fontSize, spacing } from "@/constants/theme";
+import { t } from "@/i18n";
 
 /** Calendrier des événements (contenu temporaire, bonus de l'étape 16) */
 export function CalendarScreen() {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Agenda</Text>
+      <Text style={styles.title}>{t("calendar.title")}</Text>
     </SafeAreaView>
   );
 }

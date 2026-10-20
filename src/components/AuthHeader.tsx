@@ -3,6 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Logo } from "./Logo";
 import { colors, fonts, fontSize, spacing } from "@/constants/theme";
+import { t } from "@/i18n";
 
 /** Nombre de plis dessinés dans le rideau */
 const FOLDS = 12;
@@ -31,9 +32,9 @@ export function AuthHeader() {
 
       <Logo />
       <View style={styles.texts}>
-        <Text style={styles.kicker}>L’ASSOCIATION EN SCÈNE</Text>
-        <Text style={styles.title}>EventEase</Text>
-        <Text style={styles.subtitle}>Chaque rencontre mérite son lever de rideau.</Text>
+        <Text style={styles.kicker}>{t("auth.header.kicker").toUpperCase()}</Text>
+        <Text style={styles.title}>{t("common.appName")}</Text>
+        <Text style={styles.subtitle}>{t("auth.header.tagline")}</Text>
       </View>
     </View>
   );

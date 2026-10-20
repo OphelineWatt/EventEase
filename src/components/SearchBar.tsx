@@ -2,6 +2,7 @@ import { StyleSheet, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { IconButton } from "./IconButton";
 import { colors, fonts, fontSize, radius, spacing } from "@/constants/theme";
+import { t } from "@/i18n";
 
 type SearchBarProps = {
   value: string;
@@ -10,7 +11,7 @@ type SearchBarProps = {
 };
 
 /** Champ de recherche avec loupe et bouton pour effacer */
-export function SearchBar({ value, onChangeText, placeholder = "Rechercher un événement" }: SearchBarProps) {
+export function SearchBar({ value, onChangeText, placeholder = t("events.list.searchPlaceholder") }: SearchBarProps) {
   return (
     <View style={styles.container}>
       <Ionicons name="search" size={18} color={colors.textSecondary} />
@@ -23,7 +24,7 @@ export function SearchBar({ value, onChangeText, placeholder = "Rechercher un é
         returnKeyType="search"
         style={styles.input}
       />
-      {value.length > 0 && <IconButton icon="close-circle" label="Effacer la recherche" size={18} onPress={() => onChangeText("")} />}
+      {value.length > 0 && <IconButton icon="close-circle" label={t("events.list.clearSearch")} size={18} onPress={() => onChangeText("")} />}
     </View>
   );
 }

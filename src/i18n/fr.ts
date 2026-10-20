@@ -1,0 +1,131 @@
+/** Textes français de l'application (langue de référence) */
+export const fr = {
+  common: {
+    appName: "EventEase",
+    errorTitle: "Oups",
+    unknownError: "Une erreur est survenue.",
+    cancel: "Annuler",
+    close: "Fermer",
+    back: "Retour",
+  },
+  validation: {
+    nameRequired: "Le prénom est obligatoire.",
+    emailRequired: "L’adresse e-mail est obligatoire.",
+    emailInvalid: "L’adresse e-mail n’est pas valide.",
+    passwordRequired: "Le mot de passe est obligatoire.",
+    passwordTooShort: "Le mot de passe doit contenir au moins %{count} caractères.",
+  },
+  auth: {
+    header: {
+      kicker: "L’association en scène",
+      tagline: "Chaque rencontre mérite son lever de rideau.",
+    },
+    fields: {
+      name: "Votre prénom",
+      namePlaceholder: "Camille",
+      email: "Adresse e-mail",
+      emailPlaceholder: "vous@exemple.fr",
+      password: "Mot de passe",
+      passwordPlaceholder: "%{count} caractères minimum",
+    },
+    login: {
+      kicker: "Bienvenue",
+      title: "Heureux de vous revoir",
+      subtitle: "Retrouvez les prochains événements de l’association.",
+      submit: "Se connecter",
+      toRegister: "Nouveau chez EventEase ? Créer un compte",
+      prototypeNote: "Prototype : vos données sont enregistrées uniquement sur ce téléphone.",
+    },
+    register: {
+      kicker: "Bienvenue",
+      title: "Rejoignez l’aventure",
+      subtitle: "Créez votre espace membre en quelques secondes.",
+      submit: "Créer mon compte",
+      toLogin: "Déjà membre ? Se connecter",
+    },
+    errors: {
+      emailTaken: "Un compte existe déjà avec cette adresse e-mail.",
+      invalidCredentials: "Adresse e-mail ou mot de passe incorrect.",
+    },
+  },
+  categories: {
+    conference: "Conférence",
+    atelier: "Atelier",
+    sortie: "Sortie",
+  },
+  tabs: {
+    events: "Découvrir",
+    calendar: "Calendrier",
+    profile: "Profil",
+    greeting: "Bonjour %{name}",
+  },
+  events: {
+    notFound: "Cet événement n’existe plus.",
+    list: {
+      title: "À l’affiche",
+      heroTitle: "Les prochains rendez-vous",
+      heroSubtitle: "Découvrez, rencontrez, partagez.",
+      searchPlaceholder: "Rechercher un événement",
+      clearSearch: "Effacer la recherche",
+      filterAll: "Tous",
+      count: { one: "rendez-vous", other: "rendez-vous" },
+      programme: "Programmation",
+      emptyNoEvents: "Aucun événement pour le moment. Touchez + pour créer le premier !",
+      emptyNoResults: "Aucun événement ne correspond à votre recherche.",
+      create: "Créer un événement",
+    },
+    card: {
+      open: "Voir le détail de %{title}",
+      edit: "Modifier l’événement",
+      delete: "Supprimer l’événement",
+    },
+    participate: { join: "Participer", joined: "Je participe" },
+    form: {
+      kicker: "Programmation",
+      newTitle: "Nouvel événement",
+      editTitle: "Modifier l’événement",
+      close: "Fermer le formulaire",
+      title: "Titre",
+      titlePlaceholder: "Nom de l’événement",
+      titleRequired: "Le titre est obligatoire.",
+      description: "Description",
+      descriptionPlaceholder: "Décrivez l’expérience proposée",
+      descriptionRequired: "La description est obligatoire.",
+      date: "Date",
+      time: "Heure",
+      location: "Lieu (facultatif)",
+      locationPlaceholder: "Nom ou adresse du lieu",
+      category: "Catégorie",
+      submitNew: "Ajouter à la programmation",
+      submitEdit: "Enregistrer les modifications",
+    },
+    detail: {
+      about: "À propos",
+      participants: {
+        zero: "Aucun participant pour l’instant",
+        one: "1 participant",
+        other: "%{count} participants",
+      },
+      edit: "Modifier",
+      delete: "Supprimer l’événement",
+    },
+    deleteConfirm: {
+      title: "Supprimer l’événement ?",
+      message: "« %{title} » sera définitivement supprimé.",
+      confirm: "Supprimer",
+    },
+    errors: {
+      loginRequiredToCreate: "Vous devez être connecté pour créer un événement.",
+      loginRequiredToParticipate: "Vous devez être connecté pour participer.",
+    },
+  },
+  calendar: { title: "Agenda" },
+  profile: {
+    title: "Mon profil",
+    loggedInAs: "Connecté en tant que %{name}",
+    logout: "Se déconnecter",
+  },
+};
+
+/** Forme des traductions : chaque langue doit contenir exactement les mêmes clés */
+export type Translations = typeof fr;

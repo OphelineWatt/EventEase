@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { colors, fonts, fontSize, radius, spacing } from "@/constants/theme";
+import { t } from "@/i18n";
 
 type ParticipateButtonProps = {
   /** true si l'utilisateur connecté participe déjà */
@@ -22,7 +23,7 @@ export function ParticipateButton({ active, onPress }: ParticipateButtonProps) {
         size={20}
         color={active ? colors.textOnPrimary : colors.text}
       />
-      <Text style={[styles.text, active && styles.textActive]}>{active ? "Je participe" : "Participer"}</Text>
+      <Text style={[styles.text, active && styles.textActive]}>{active ? t("events.participate.joined") : t("events.participate.join")}</Text>
     </Pressable>
   );
 }

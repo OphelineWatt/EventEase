@@ -6,6 +6,7 @@ import { Input } from "@/components/Input";
 import { ScreenTitle } from "@/components/ScreenTitle";
 import { colors, fonts, fontSize, spacing } from "@/constants/theme";
 import { useAuth } from "@/hooks/useAuth";
+import { t } from "@/i18n";
 import { PASSWORD_MIN_LENGTH, validateEmail, validateName, validatePassword } from "@/utils/validation";
 import type { RootStackScreenProps } from "@/navigation/types";
 
@@ -39,7 +40,7 @@ export function RegisterScreen({ navigation }: RootStackScreenProps<"Register">)
     try {
       await register(name, email, password);
     } catch (error) {
-      setFormError(error instanceof Error ? error.message : "Une erreur est survenue.");
+      setFormError(error instanceof Error ? error.message : t("common.unknownError"));
       setSubmitting(false);
     }
   }
@@ -52,35 +53,35 @@ export function RegisterScreen({ navigation }: RootStackScreenProps<"Register">)
 
         <View style={styles.body}>
           <ScreenTitle
-            kicker="Bienvenue"
-            title="Rejoignez l’aventure"
-            subtitle="Créez votre espace membre en quelques secondes."
+            kicker={t("auth.register.kicker")}
+            title={t("auth.register.title")}
+            subtitle={t("auth.register.subtitle")}
           />
 
           <Input
-            label="Votre prénom"
+            label={t("auth.fields.name")}
             value={name}
             onChangeText={setName}
-            placeholder="Camille"
+            placeholder={t("auth.fields.namePlaceholder")}
             autoCapitalize="words"
             autoComplete="given-name"
             error={errors.name}
           />
           <Input
-            label="Adresse e-mail"
+            label={t("auth.fields.email")}
             value={email}
             onChangeText={setEmail}
-            placeholder="vous@exemple.fr"
+            placeholder={t("auth.fields.emailPlaceholder")}
             keyboardType="email-address"
             autoCapitalize="none"
             autoComplete="email"
             error={errors.email}
           />
           <Input
-            label="Mot de passe"
+            label={t("auth.fields.password")}
             value={password}
             onChangeText={setPassword}
-            placeholder={`${PASSWORD_MIN_LENGTH} caractères minimum`}
+            placeholder={t("auth.fields.passwordPlaceholder", { count: PASSWORD_MIN_LENGTH })}
             secureTextEntry
             autoComplete="new-password"
             error={errors.password}
@@ -88,8 +89,8 @@ export function RegisterScreen({ navigation }: RootStackScreenProps<"Register">)
 
           {formError && <Text style={styles.formError}>{formError}</Text>}
 
-          <Button title="Créer mon compte" onPress={handleSubmit} loading={submitting} />
-          <Button title="Déjà membre ? Se connecter" variant="link" onPress={() => navigation.goBack()} />
+          <Button title={t("auth.register.submit")} onPress={handleSubmit} loading={submitting} />
+          <Button title={t("auth.register.toLogin")} variant="link" onPress={() => navigation.goBack()} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

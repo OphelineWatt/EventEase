@@ -1,6 +1,8 @@
+import { t } from "@/i18n";
+
 /**
  * Règles de validation des formulaires.
- * Chaque fonction renvoie un message d'erreur, ou undefined si la valeur est correcte.
+ * Chaque fonction renvoie un message d'erreur (traduit), ou undefined si la valeur est correcte.
  */
 
 /** Longueur minimale d'un mot de passe (indiquée sur la maquette) */
@@ -15,20 +17,20 @@ export function validateRequired(value: string, message: string): string | undef
 }
 
 export function validateName(name: string): string | undefined {
-  if (!name.trim()) return "Le prénom est obligatoire.";
+  if (!name.trim()) return t("validation.nameRequired");
   return undefined;
 }
 
 export function validateEmail(email: string): string | undefined {
-  if (!email.trim()) return "L'adresse e-mail est obligatoire.";
-  if (!EMAIL_REGEX.test(email.trim())) return "L'adresse e-mail n'est pas valide.";
+  if (!email.trim()) return t("validation.emailRequired");
+  if (!EMAIL_REGEX.test(email.trim())) return t("validation.emailInvalid");
   return undefined;
 }
 
 export function validatePassword(password: string): string | undefined {
-  if (!password) return "Le mot de passe est obligatoire.";
+  if (!password) return t("validation.passwordRequired");
   if (password.length < PASSWORD_MIN_LENGTH) {
-    return `Le mot de passe doit contenir au moins ${PASSWORD_MIN_LENGTH} caractères.`;
+    return t("validation.passwordTooShort", { count: PASSWORD_MIN_LENGTH });
   }
   return undefined;
 }

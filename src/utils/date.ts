@@ -1,9 +1,9 @@
+import { i18n } from "@/i18n";
+
 /**
- * Fonctions d'affichage des dates en français.
+ * Fonctions d'affichage des dates dans la langue de l'application.
  * Les dates sont stockées au format ISO (texte) : on les convertit en Date uniquement pour l'affichage.
  */
-
-const LOCALE = "fr-FR";
 
 /** Une date ISO (comme dans Event.date) ou un objet Date (comme dans le formulaire) */
 type DateLike = string | Date;
@@ -14,27 +14,27 @@ function toDate(value: DateLike): Date {
 
 /** Jour du mois : "22" */
 export function formatDay(value: DateLike): string {
-  return toDate(value).toLocaleDateString(LOCALE, { day: "numeric" });
+  return toDate(value).toLocaleDateString(i18n.locale, { day: "numeric" });
 }
 
 /** Mois abrégé en majuscules : "OCT." */
 export function formatMonthShort(value: DateLike): string {
-  return toDate(value).toLocaleDateString(LOCALE, { month: "short" }).toUpperCase();
+  return toDate(value).toLocaleDateString(i18n.locale, { month: "short" }).toUpperCase();
 }
 
 /** Heure : "18:30" */
 export function formatTime(value: DateLike): string {
-  return toDate(value).toLocaleTimeString(LOCALE, { hour: "2-digit", minute: "2-digit" });
+  return toDate(value).toLocaleTimeString(i18n.locale, { hour: "2-digit", minute: "2-digit" });
 }
 
 /** Date courte : "22/10/2026" */
 export function formatShortDate(value: DateLike): string {
-  return toDate(value).toLocaleDateString(LOCALE);
+  return toDate(value).toLocaleDateString(i18n.locale);
 }
 
 /** Date complète avec majuscule : "Jeudi 22 octobre 2026" */
 export function formatLongDate(value: DateLike): string {
-  const text = toDate(value).toLocaleDateString(LOCALE, {
+  const text = toDate(value).toLocaleDateString(i18n.locale, {
     weekday: "long",
     day: "numeric",
     month: "long",

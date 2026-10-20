@@ -6,6 +6,7 @@ import { Input } from "@/components/Input";
 import { ScreenTitle } from "@/components/ScreenTitle";
 import { colors, fonts, fontSize, radius, spacing } from "@/constants/theme";
 import { useAuth } from "@/hooks/useAuth";
+import { t } from "@/i18n";
 import { PASSWORD_MIN_LENGTH, validateEmail } from "@/utils/validation";
 import type { RootStackScreenProps } from "@/navigation/types";
 
@@ -27,7 +28,7 @@ export function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
     // 1. Vérification des champs avant d'interroger le stockage
     const newErrors = {
       email: validateEmail(email),
-      password: password ? undefined : "Le mot de passe est obligatoire.",
+      password: password ? undefined : t("validation.passwordRequired"),
     };
     setErrors(newErrors);
     setFormError(undefined);
@@ -39,7 +40,7 @@ export function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
       await login(email, password);
       // Succès : rien à faire ici, la navigation bascule toute seule vers les onglets (étape 9)
     } catch (error) {
-      setFormError(error instanceof Error ? error.message : "Une erreur est survenue.");
+      setFormError(error instanceof Error ? error.message : t("common.unknownError"));
       setSubmitting(false);
     }
   }
@@ -52,26 +53,26 @@ export function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
 
         <View style={styles.body}>
           <ScreenTitle
-            kicker="Bienvenue"
-            title="Heureux de vous revoir"
-            subtitle="Retrouvez les prochains événements de l’association."
+            kicker={t("auth.login.kicker")}
+            title={t("auth.login.title")}
+            subtitle={t("auth.login.subtitle")}
           />
 
           <Input
-            label="Adresse e-mail"
+            label={t("auth.fields.email")}
             value={email}
             onChangeText={setEmail}
-            placeholder="vous@exemple.fr"
+            placeholder={t("auth.fields.emailPlaceholder")}
             keyboardType="email-address"
             autoCapitalize="none"
             autoComplete="email"
             error={errors.email}
           />
           <Input
-            label="Mot de passe"
+            label={t("auth.fields.password")}
             value={password}
             onChangeText={setPassword}
-            placeholder={`${PASSWORD_MIN_LENGTH} caractères minimum`}
+            placeholder={t("auth.fields.passwordPlaceholder", { count: PASSWORD_MIN_LENGTH })}
             secureTextEntry
             autoComplete="current-password"
             error={errors.password}
@@ -79,16 +80,16 @@ export function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
 
           {formError && <Text style={styles.formError}>{formError}</Text>}
 
-          <Button title="Se connecter" onPress={handleSubmit} loading={submitting} />
+          <Button title={t("auth.login.submit")} onPress={handleSubmit} loading={submitting} />
           <Button
-            title="Nouveau chez EventEase ? Créer un compte"
+            title={t("auth.login.toRegister")}
             variant="link"
             onPress={() => navigation.navigate("Register")}
           />
 
           <View style={styles.note}>
             <Text style={styles.noteText}>
-              Prototype : vos données sont enregistrées uniquement sur ce téléphone.
+              {t("auth.login.prototypeNote")}
             </Text>
           </View>
         </View>

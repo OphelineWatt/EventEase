@@ -1,8 +1,13 @@
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import DateTimePicker, { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { getCalendars } from "expo-localization";
 import { colors, fonts, fontSize, radius, spacing } from "@/constants/theme";
+import { i18n } from "@/i18n";
 import { formatShortDate, formatTime } from "@/utils/date";
+
+/** true si le téléphone affiche les heures sur 24 h (France) plutôt que 12 h AM/PM (États-Unis) */
+const USES_24_HOUR_CLOCK = getCalendars()[0]?.uses24hourClock ?? true;
 
 type DateTimeFieldProps = {
   label: string;
@@ -36,7 +41,7 @@ export function DateTimeField({ label, mode, value, onChange }: DateTimeFieldPro
     DateTimePickerAndroid.open({
       value,
       mode,
-      is24Hour: true,
+      is24Hour: USES_24_HOUR_CLOCK,
       onValueChange: (_event, picked) => handlePicked(picked),
     });
   }
@@ -50,7 +55,7 @@ export function DateTimeField({ label, mode, value, onChange }: DateTimeFieldPro
           value={value}
           mode={mode}
           display="compact"
-          locale="fr-FR"
+          locale={i18n.locale}
           accentColor={colors.primary}
           onValueChange={(_event, picked) => handlePicked(picked)}
           style={styles.iosPicker}

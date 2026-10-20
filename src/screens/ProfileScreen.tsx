@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "@/components/Button";
 import { colors, fonts, fontSize, spacing } from "@/constants/theme";
 import { useAuth } from "@/hooks/useAuth";
+import { t } from "@/i18n";
 
 /** Profil du membre connecté (contenu temporaire) */
 export function ProfileScreen() {
@@ -10,9 +11,9 @@ export function ProfileScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Mon profil</Text>
-      <Text style={styles.text}>Connecté en tant que {user?.name}</Text>
-      <Button title="Se déconnecter" variant="outline" onPress={logout} />
+      <Text style={styles.title}>{t("profile.title")}</Text>
+      <Text style={styles.text}>{t("profile.loggedInAs", { name: user?.name ?? "" })}</Text>
+      <Button title={t("profile.logout")} variant="outline" onPress={logout} />
     </SafeAreaView>
   );
 }

@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
+import { t } from "@/i18n";
 import { clearSession, getSession, getUsers, saveSession, saveUsers } from "@/services/storage";
 import type { User } from "@/types/user";
 
@@ -44,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const users = await getUsers();
 
     if (users.some((u) => u.email === normalizedEmail)) {
-      throw new Error("Un compte existe déjà avec cette adresse e-mail.");
+      throw new Error(t("auth.errors.emailTaken"));
     }
 
     const newUser: User = { name: name.trim(), email: normalizedEmail, password };
@@ -60,7 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const found = users.find((u) => u.email === normalizedEmail && u.password === password);
 
     if (!found) {
-      throw new Error("Adresse e-mail ou mot de passe incorrect.");
+      throw new Error(t("auth.errors.invalidCredentials"));
     }
 
     await saveSession(found.email);

@@ -5,6 +5,7 @@ import { IconButton } from "./IconButton";
 import { InfoRow } from "./InfoRow";
 import { ParticipateButton } from "./ParticipateButton";
 import { colors, fonts, fontSize, radius, spacing } from "@/constants/theme";
+import { t } from "@/i18n";
 import { formatTime } from "@/utils/date";
 import type { Event } from "@/types/event";
 
@@ -27,7 +28,7 @@ export function EventCard({ event, isParticipating, onPress, onEdit, onDelete, o
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
-      accessibilityLabel={`Voir le détail de ${event.title}`}
+      accessibilityLabel={t("events.card.open", { title: event.title })}
       style={({ pressed }) => [styles.card, pressed && styles.pressed]}
     >
       <View style={styles.row}>
@@ -37,8 +38,8 @@ export function EventCard({ event, isParticipating, onPress, onEdit, onDelete, o
           <View style={styles.headerRow}>
             <CategoryBadge category={event.category} />
             <View style={styles.actions}>
-              <IconButton icon="create-outline" label="Modifier l’événement" onPress={onEdit} />
-              <IconButton icon="trash-outline" label="Supprimer l’événement" onPress={onDelete} />
+              <IconButton icon="create-outline" label={t("events.card.edit")} onPress={onEdit} />
+              <IconButton icon="trash-outline" label={t("events.card.delete")} onPress={onDelete} />
             </View>
           </View>
 

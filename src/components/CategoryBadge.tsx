@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import { CATEGORY_LABELS } from "@/constants/categories";
+import { getCategoryLabel } from "@/constants/categories";
 import { categoryColors, fonts, fontSize, radius, spacing } from "@/constants/theme";
 import type { EventCategory } from "@/types/event";
 
@@ -9,7 +9,7 @@ export function CategoryBadge({ category }: { category: EventCategory }) {
 
   return (
     <View style={[styles.badge, { backgroundColor: palette.background }]}>
-      <Text style={[styles.text, { color: palette.text }]}>{CATEGORY_LABELS[category].toUpperCase()}</Text>
+      <Text style={[styles.text, { color: palette.text }]}>{getCategoryLabel(category).toUpperCase()}</Text>
     </View>
   );
 }
