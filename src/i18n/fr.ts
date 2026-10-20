@@ -130,8 +130,15 @@ export const fr = {
     showMonth: "Voir tout le mois",
   },
   profile: {
+    headerTitle: "Votre espace",
+    kicker: "Espace membre",
     title: "Mon profil",
-    loggedInAs: "Connecté en tant que %{name}",
+    member: "Membre EventEase",
+    participations: { zero: "participation", one: "participation", other: "participations" },
+    created: { zero: "événement créé", one: "événement créé", other: "événements créés" },
+    welcomeTitle: "Un accueil pour toutes et tous",
+    welcomeText:
+      "Contrastes renforcés, textes lisibles, zones tactiles confortables et compatibilité avec les lecteurs d’écran ont guidé cette expérience.",
     logout: "Se déconnecter",
   },
 };

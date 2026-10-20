@@ -132,8 +132,15 @@ export const en: Translations = {
     showMonth: "Show the whole month",
   },
   profile: {
+    headerTitle: "Your space",
+    kicker: "Member area",
     title: "My profile",
-    loggedInAs: "Signed in as %{name}",
+    member: "EventEase member",
+    participations: { zero: "participations", one: "participation", other: "participations" },
+    created: { zero: "events created", one: "event created", other: "events created" },
+    welcomeTitle: "A welcome for everyone",
+    welcomeText:
+      "Strong contrast, readable text, comfortable touch targets and screen reader support guided this experience.",
     logout: "Sign out",
   },
 };
