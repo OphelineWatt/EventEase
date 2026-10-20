@@ -40,7 +40,27 @@ export function formatLongDate(value: DateLike): string {
     month: "long",
     year: "numeric",
   });
+  return capitalize(text);
+}
+
+/** Met la première lettre en majuscule : "octobre" → "Octobre" */
+export function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+/** Les 12 mois dans la langue de l'app : ["Janvier", "Février", …] ou ["January", …] */
+export function getMonthNames(format: "long" | "short"): string[] {
+  return Array.from({ length: 12 }, (_, month) =>
+    capitalize(new Date(2024, month, 1).toLocaleDateString(i18n.locale, { month: format })),
+  );
+}
+
+/** Les 7 jours, du dimanche au samedi : ["Dimanche", "Lundi", …] ou, en "narrow", ["D", "L", "M", …] */
+export function getWeekdayNames(format: "long" | "narrow"): string[] {
+  // Le 7 janvier 2024 était un dimanche : on part de ce jour et on avance d'un jour à chaque fois
+  return Array.from({ length: 7 }, (_, day) =>
+    capitalize(new Date(2024, 0, 7 + day).toLocaleDateString(i18n.locale, { weekday: format })),
+  );
 }
 
 /** Date proposée par défaut pour un nouvel événement : demain à 18h00 */

@@ -119,7 +119,16 @@ export const fr = {
       loginRequiredToParticipate: "Vous devez être connecté pour participer.",
     },
   },
-  calendar: { title: "Agenda" },
+  calendar: {
+    title: "Agenda",
+    today: "Aujourd’hui",
+    kicker: "Votre mois",
+    heading: "Le calendrier",
+    monthEvents: "À l’affiche ce mois-ci",
+    emptyMonth: "Aucun événement ce mois-ci.",
+    emptyDay: "Aucun événement ce jour-là.",
+    showMonth: "Voir tout le mois",
+  },
   profile: {
     title: "Mon profil",
     loggedInAs: "Connecté en tant que %{name}",

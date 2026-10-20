@@ -121,7 +121,16 @@ export const en: Translations = {
       loginRequiredToParticipate: "You must be signed in to join an event.",
     },
   },
-  calendar: { title: "Calendar" },
+  calendar: {
+    title: "Calendar",
+    today: "Today",
+    kicker: "Your month",
+    heading: "The calendar",
+    monthEvents: "Showing this month",
+    emptyMonth: "No events this month.",
+    emptyDay: "No events on this day.",
+    showMonth: "Show the whole month",
+  },
   profile: {
     title: "My profile",
     loggedInAs: "Signed in as %{name}",
