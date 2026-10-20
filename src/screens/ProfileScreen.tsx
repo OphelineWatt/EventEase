@@ -2,23 +2,28 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Button } from "@/components/Button";
+import { EventRow } from "@/components/EventRow";
 import { ScreenTitle } from "@/components/ScreenTitle";
 import { TabHeader } from "@/components/TabHeader";
 import { colors, fonts, fontSize, radius, spacing } from "@/constants/theme";
 import { useAuth } from "@/hooks/useAuth";
 import { useEvents } from "@/hooks/useEvents";
 import { t } from "@/i18n";
+import type { MainTabScreenProps } from "@/navigation/types";
 
-/** Profil du membre connecté : avatar, statistiques, encadré accessibilité, déconnexion */
-export function ProfileScreen() {
+/** Profil du membre connecté : avatar, statistiques, mes participations, déconnexion */
+export function ProfileScreen({ navigation }: MainTabScreenProps<"Profile">) {
   const { user, logout } = useAuth();
   const { events } = useEvents();
 
   // L'écran n'est accessible que connecté : ce cas ne sert qu'à rassurer TypeScript
   if (!user) return null;
 
+  // Événements auxquels je participe (déjà triés par date par le contexte)
+  const myEvents = events.filter((e) => e.participants.includes(user.email));
+
   // Statistiques calculées à partir des événements (rien n'est stocké en plus)
-  const participationsCount = events.filter((e) => e.participants.includes(user.email)).length;
+  const participationsCount = myEvents.length;
   const createdCount = events.filter((e) => e.createdBy === user.email).length;
 
   // Initiale affichée dans l'avatar : "Camille" → "C"
@@ -47,10 +52,20 @@ export function ProfileScreen() {
           </View>
         </View>
 
-        {/* Encadré accessibilité (maquette) */}
-        <View style={styles.welcome}>
-          <Text style={styles.welcomeTitle}>{t("profile.welcomeTitle")}</Text>
-          <Text style={styles.welcomeText}>{t("profile.welcomeText")}</Text>
+        {/* Mes participations : un raccourci vers chaque événement */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>{t("profile.myEvents")}</Text>
+          {myEvents.length === 0 ? (
+            <Text style={styles.empty}>{t("profile.noEvents")}</Text>
+          ) : (
+            myEvents.map((event) => (
+              <EventRow
+                key={event.id}
+                event={event}
+                onPress={() => navigation.navigate("EventDetail", { eventId: event.id })}
+              />
+            ))
+          )}
         </View>
 
         <Button
@@ -103,14 +118,7 @@ const styles = StyleSheet.create({
   statDivider: { width: 1, backgroundColor: colors.border },
   statValue: { fontFamily: fonts.title, fontSize: fontSize.lg, color: colors.primary },
   statLabel: { fontFamily: fonts.body, fontSize: fontSize.sm, color: colors.textSecondary, textAlign: "center" },
-  welcome: {
-    gap: spacing.xs,
-    padding: spacing.md,
-    borderLeftWidth: 3,
-    borderLeftColor: colors.accent,
-    borderRadius: radius.md,
-    backgroundColor: colors.accentLight,
-  },
-  welcomeTitle: { fontFamily: fonts.title, fontSize: fontSize.lg, color: colors.text },
-  welcomeText: { fontFamily: fonts.body, fontSize: fontSize.sm, lineHeight: 20, color: colors.text },
+  section: { gap: spacing.sm },
+  sectionTitle: { fontFamily: fonts.title, fontSize: fontSize.lg, color: colors.text },
+  empty: { fontFamily: fonts.body, fontSize: fontSize.md, color: colors.textSecondary },
 });

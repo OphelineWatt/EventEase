@@ -139,6 +139,23 @@ export const en: Translations = {
     permissionDenied: "Allow location access in Settings to see the distance.",
     errors: { searchFailed: "Address search failed. Please check your connection." },
   },
+  weather: {
+    title: "Weather forecast",
+    rainChance: "Chance of rain: %{value}%",
+    tooFar: "Forecast available %{days} days before the event.",
+    loading: "Loading weather…",
+    conditions: {
+      clear: "Sunny",
+      partlyCloudy: "Partly cloudy",
+      cloudy: "Cloudy",
+      fog: "Fog",
+      drizzle: "Drizzle",
+      rain: "Rain",
+      snow: "Snow",
+      storm: "Thunderstorm",
+    },
+    errors: { unavailable: "Weather is unavailable right now." },
+  },
   profile: {
     headerTitle: "Your space",
     kicker: "Member area",
@@ -146,9 +163,8 @@ export const en: Translations = {
     member: "EventEase member",
     participations: { zero: "participations", one: "participation", other: "participations" },
     created: { zero: "events created", one: "event created", other: "events created" },
-    welcomeTitle: "A welcome for everyone",
-    welcomeText:
-      "Strong contrast, readable text, comfortable touch targets and screen reader support guided this experience.",
+    myEvents: "Events I’m going to",
+    noEvents: "You haven’t joined any event yet. Tap “Join” on an event to find it here.",
     logout: "Sign out",
   },
 };

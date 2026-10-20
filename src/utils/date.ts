@@ -63,6 +63,17 @@ export function getWeekdayNames(format: "long" | "narrow"): string[] {
   );
 }
 
+/** Nombre de jours entre aujourd'hui et la date : 0 = aujourd'hui, 1 = demain, -1 = hier */
+export function daysFromToday(value: DateLike): number {
+  const target = toDate(value);
+  const now = new Date();
+  // On compare des jours entiers (à minuit), pas des heures
+  const targetDay = new Date(target.getFullYear(), target.getMonth(), target.getDate());
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  // Math.round absorbe les journées de 23 h / 25 h des changements d'heure
+  return Math.round((targetDay.getTime() - today.getTime()) / 86_400_000);
+}
+
 /** Date proposée par défaut pour un nouvel événement : demain à 18h00 */
 export function getDefaultEventDate(): Date {
   const date = new Date();

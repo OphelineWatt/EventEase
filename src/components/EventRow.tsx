@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { categoryColors, colors, fonts, fontSize, radius, spacing } from "@/constants/theme";
 import { t } from "@/i18n";
-import { formatDay, formatTime } from "@/utils/date";
+import { formatDay, formatMonthShort, formatTime } from "@/utils/date";
 import type { Event } from "@/types/event";
 
 type EventRowProps = {
@@ -10,7 +10,7 @@ type EventRowProps = {
   onPress: () => void;
 };
 
-/** Ligne compacte d'un événement (liste sous le calendrier) */
+/** Ligne compacte d'un événement (liste sous le calendrier, participations du profil) */
 export function EventRow({ event, onPress }: EventRowProps) {
   const palette = categoryColors[event.category];
   // "18:30 · Théâtre des Célestins" (le lieu est facultatif)
@@ -25,6 +25,7 @@ export function EventRow({ event, onPress }: EventRowProps) {
     >
       <View style={[styles.day, { backgroundColor: palette.background }]}>
         <Text style={[styles.dayText, { color: palette.text }]}>{formatDay(event.date)}</Text>
+        <Text style={[styles.monthText, { color: palette.text }]}>{formatMonthShort(event.date)}</Text>
       </View>
       <View style={styles.texts}>
         <Text style={styles.title} numberOfLines={1}>
@@ -51,8 +52,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card,
   },
   pressed: { opacity: 0.85 },
-  day: { width: 44, height: 44, borderRadius: radius.sm, alignItems: "center", justifyContent: "center" },
+  day: { width: 48, paddingVertical: spacing.xs, borderRadius: radius.sm, alignItems: "center", justifyContent: "center" },
   dayText: { fontFamily: fonts.title, fontSize: fontSize.lg },
+  monthText: { fontFamily: fonts.bodyBold, fontSize: fontSize.xs - 1 },
   texts: { flex: 1, gap: 2 },
   title: { fontFamily: fonts.bodyBold, fontSize: fontSize.md, color: colors.text },
   details: { fontFamily: fonts.body, fontSize: fontSize.sm, color: colors.textSecondary },

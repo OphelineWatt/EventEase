@@ -137,6 +137,23 @@ export const fr = {
     permissionDenied: "Autorisez la localisation dans les réglages pour voir la distance.",
     errors: { searchFailed: "La recherche d’adresse a échoué. Vérifiez votre connexion." },
   },
+  weather: {
+    title: "Météo prévue",
+    rainChance: "Risque de pluie : %{value} %",
+    tooFar: "Prévisions disponibles %{days} jours avant l’événement.",
+    loading: "Chargement de la météo…",
+    conditions: {
+      clear: "Ensoleillé",
+      partlyCloudy: "Éclaircies",
+      cloudy: "Nuageux",
+      fog: "Brouillard",
+      drizzle: "Bruine",
+      rain: "Pluie",
+      snow: "Neige",
+      storm: "Orage",
+    },
+    errors: { unavailable: "Météo indisponible pour le moment." },
+  },
   profile: {
     headerTitle: "Votre espace",
     kicker: "Espace membre",
@@ -144,9 +161,9 @@ export const fr = {
     member: "Membre EventEase",
     participations: { zero: "participation", one: "participation", other: "participations" },
     created: { zero: "événement créé", one: "événement créé", other: "événements créés" },
-    welcomeTitle: "Un accueil pour toutes et tous",
-    welcomeText:
-      "Contrastes renforcés, textes lisibles, zones tactiles confortables et compatibilité avec les lecteurs d’écran ont guidé cette expérience.",
+    myEvents: "Mes participations",
+    noEvents:
+      "Vous ne participez à aucun événement pour l’instant. Touchez « Participer » sur un événement pour le retrouver ici.",
     logout: "Se déconnecter",
   },
 };

@@ -7,9 +7,11 @@ import { DateBlock } from "@/components/DateBlock";
 import { IconButton } from "@/components/IconButton";
 import { InfoRow } from "@/components/InfoRow";
 import { ParticipateButton } from "@/components/ParticipateButton";
+import { WeatherCard } from "@/components/WeatherCard";
 import { colors, fonts, fontSize, radius, spacing } from "@/constants/theme";
 import { useAuth } from "@/hooks/useAuth";
 import { useEvents } from "@/hooks/useEvents";
+import { useEventWeather } from "@/hooks/useEventWeather";
 import { useUserLocation } from "@/hooks/useUserLocation";
 import { t } from "@/i18n";
 import { confirmDelete, showError } from "@/utils/alerts";
@@ -28,6 +30,8 @@ export function EventDetailScreen({ navigation, route }: RootStackScreenProps<"E
 
   // Relu à chaque affichage : l'écran se met à jour après une modification ou une participation
   const event = getEventById(eventId);
+  // Météo du jour de l'événement (appelé avant le return anticipé : règle des hooks)
+  const weather = useEventWeather(event);
 
   // L'événement n'existe plus (supprimé) : on l'indique au lieu de planter
   if (!event) {
@@ -86,6 +90,8 @@ export function EventDetailScreen({ navigation, route }: RootStackScreenProps<"E
           )}
           <InfoRow icon="people-outline" text={t("events.detail.participants", { count: event.participants.length })} />
         </View>
+
+        <WeatherCard state={weather} />
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{t("events.detail.about")}</Text>
